@@ -49,11 +49,11 @@ autocmd FileType c,cpp setlocal equalprg=clang-format\ -style=file
 autocmd VimEnter * : call SetPath()
 
 " cursor
-nnormap <leader>n :bn<cr>
-nnormap <leader>p :bp<cr>
-nnormap <leader>d :bd<cr>
-nnormap <leader>bb :buffers<cr>:b<cr>
-nnormap <leader><tab> :b#<cr>
+nnoremap <leader>n :bn<cr>
+nnoremap <leader>p :bp<cr>
+nnoremap <leader>d :bd<cr>
+nnoremap <leader>bb :buffers<cr>:b<cr>
+nnoremap <leader><tab> :b#<cr>
 
 " theme
 syntax on
@@ -100,10 +100,10 @@ let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
 let g:gutentags_ctags_tagfile = '.tags'
 " ctags and gtags
 let g:gutentags_modules = []
-if executalbe('ctags')
+if executable('ctags')
 	let g:gutentags_modules += ['ctags']
 endif
-if executalbe('gtags-cscope') && executable('gtags')
+if executable('gtags-cscope') && executable('gtags')
 	let g:gutentags_modules += ['gtags_cscope']
 endif
 let g:gutentags_cache_dir = expand('~/.cache/tags')
@@ -132,7 +132,7 @@ let g:ale_cpp_cppcheck_option = ''
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline#extensions#tabline#formatter = 'default
+let g:airline#extensions#tabline#formatter = 'default'
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#wordcount#formatter#default#fmt = '%s W'
 
