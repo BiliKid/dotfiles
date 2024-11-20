@@ -1,5 +1,5 @@
 call plug#begin('~/.vim/plugged')
-Plug 'neoclide/coc.vim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'easymotion/vim-easymotion'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -8,12 +8,14 @@ Plug 'tpope/vim-fugitive'
 Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension'}
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'dense-analysis/ale'
-Plug 'mhinz/vim-signify', {'branch': 'legacy'}
+Plug 'mhinz/vim-signify'
 Plug 'Yggdroot/indentLine'
-Plug 'joshdick/onedark.vim'
+Plug 'joshdick/onedark.vim', {'branch': 'main'}
 Plug 'junegunn/seoul256.vim'
 Plug 'morhetz/gruvbox'
 Plug 'liuchengxu/vista.vim'
+Plug 'Raimondi/delimitMate'
+Plug 'preservim/nerdtree'
 call plug#end()
 
 set nu
@@ -45,8 +47,8 @@ function! SetPath()
 	execute "set path+=".current_dir
 endfunc
 
-autocmd FileType c,cpp setlocal equalprg=clang-format\ -style=file
-autocmd VimEnter * : call SetPath()
+"autocmd FileType c,cpp setlocal equalprg=clang-format\ -style=file
+"autocmd VimEnter * : call SetPath()
 
 " cursor
 nnoremap <leader>n :bn<cr>
@@ -58,7 +60,8 @@ nnoremap <leader><tab> :b#<cr>
 " theme
 syntax on
 set bg=dark
-colo onedark
+"colo onedark
+colo gruvbox
 
 " easymotion
 nmap s <Plug>(easymotion-overwin-f2)
@@ -77,7 +80,6 @@ inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 " format on enter, <cr> could be remapped by other vim plugin
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-nnoremap <F4> :CocCommand explorer --toggle --root-strategies keep --sources buffers+,file+ <cr>
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
 nnoremap <silent><nowait> <Leader>co  :<C-u>CocList outline<cr>
@@ -89,6 +91,8 @@ nmap <leader> [g  <Plug>(coc-diagnostic-prev)
 nmap <leader> ]g  <Plug>(coc-diagnostic-next)
 
 nmap <leader>rf <Plug>(coc-refactor)
+let g:coc_disable_startup_warning = 1
+
 
 " signify
 set signcolumn=yes
@@ -129,6 +133,8 @@ let g:ale_c_cppcheck_option = ''
 let g:ale_cpp_cppcheck_option = ''
 
 " airline
+let g:airline_left_sep=''
+let g:airline_right_sep=''
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
@@ -150,7 +156,7 @@ let g:gitgutter_gt_executable = '/usr/bin/git'
 set updatetime=100
 
 " gtags
-let $GTAGSCONF = expand('~/.vim/gtags.conf')
+"let $GTAGSCONF = expand('~/.vim/gtags.conf')
 
 " leaderf
 let g:Lf_CacheDirectory = expand('~/.vim/cache')
@@ -162,7 +168,7 @@ let g:Lf_IgnoreCurrentBufferName = 1
 " popup mode
 let g:Lf_WindowPosition = 'popup'
 let g:Lf_PreviewInPopup = 1
-let g:Lf_StlSeparator = { 'left': "\ue0b0", 'right': "\ue0b2", 'font': "DejaVu Sans Mono for Powerline" }
+" let g:Lf_StlSeparator = { 'left': "\ue0b0", 'right': "\ue0b2", 'font': "DejaVu Sans Mono for Powerline" }
 let g:Lf_PreviewResult = {'Function': 0, 'BufTag': 0 }
 
 let g:Lf_ShortcutF = "<leader>ff"
@@ -173,12 +179,13 @@ noremap <leader>ft :<C-U><C-R>=printf("Leaderf bufTag %s", "")<CR><CR>
 noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
 
 noremap <C-B> :<C-U><C-R>=printf("Leaderf! rg --current-buffer -e %s ", expand("<cword>"))<CR>
-noremap <C-F> :<C-U><C-R>=printf("Leaderf! rg -e %s ", expand("<cword>"))<CR>
+noremap <C-F> :<C-U><C-R>=printf("Leaderf! rg -w -e %s ", expand("<cword>"))<CR>
 " search visually selected text literally
 xnoremap gf :<C-U><C-R>=printf("Leaderf! rg -F -e %s ", leaderf#Rg#visual())<CR>
 noremap go :<C-U>Leaderf! rg --recall<CR>
 
 " should use `Leaderf gtags --update` first
+nnoremap <F10> :Leaderf gtags --update <cr>
 let g:Lf_GtagsAutoGenerate = 0
 let g:Lf_GtagsAutoUpdate = 1
 let g:Lf_Gtagslabel = 'native-pygments'
@@ -211,4 +218,8 @@ let g:vista#renderer#icons = {
 \  }
 nnoremap <F5> :Vista!! <cr>
 
+" nerdtree
+nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <leader>t :NERDTreeToggle<CR>
+nnoremap <leader>f :NERDTreeFind<CR>
 
