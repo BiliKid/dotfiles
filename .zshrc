@@ -101,14 +101,6 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias vi=vim
-set_git_proxy() {
-    git config --global http.proxy 'http://localhost:7891'
-    git config --global https.proxy 'http://localhost:7891'
-}
-unset_git_proxy() {
-    git config --global --unset http.proxy
-    git config --global --unset https.proxy
-}
 
 plugins=( 
     # other plugins...
