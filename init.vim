@@ -93,6 +93,10 @@ nmap <leader> ]g  <Plug>(coc-diagnostic-next)
 
 nmap <leader>rf <Plug>(coc-refactor)
 let g:coc_disable_startup_warning = 1
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
 " signify
 set signcolumn=yes
@@ -148,6 +152,8 @@ let g:tagbar_type_rust = {
   \ },
 \ }
 nmap <F8> :TagbarToggle<CR>
+let g:rustfmt_autosave = 1
+let g:rust_cargo_use_clippy = 1
 
 " ale
 let g:ale_linters_explicit = 1
