@@ -1,7 +1,6 @@
 call plug#begin('~/.config/nvim/plugged')
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'easymotion/vim-easymotion'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -18,7 +17,22 @@ Plug 'Raimondi/delimitMate'
 Plug 'preservim/nerdtree'
 Plug 'rust-lang/rust.vim'
 Plug 'preservim/tagbar'
+Plug 'Exafunction/codeium.vim', { 'branch': 'main' }
+Plug 'neovim/nvim-lspconfig'
 call plug#end()
+
+" lsp
+lua require("lspconfig").clangd.setup({})
+
+lua << EOF
+local lspconfig = require'lspconfig'
+lspconfig.rust_analyzer.setup({
+    on_attach = function(client, bufnr)
+        vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+    end
+})
+EOF
+
 
 set nu
 set t_ut=
@@ -70,33 +84,6 @@ map <leader>l <Plug>(easymotion-bd-jk)
 nmap <leader>l <Plug>(easymotion-overwin-line)
 map <leader>w <Plug>(easymotion-bd-w)
 nmap <leader>w <Plug>(easymotion-overwin-w)
-
-" coc
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-" Make <CR> auto-select the first completion item and notify coc.nvim to
-" format on enter, <cr> could be remapped by other vim plugin
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
-nnoremap <silent><nowait> <Leader>co  :<C-u>CocList outline<cr>
-set statusline^=%{coc#status{}}%{get(b:,'coc_current_function','')}
-" Formatting selected code.
-xmap <leader>cf  <Plug>(coc-format-selected)
-nmap <leader>cf  <Plug>(coc-format-selected)
-nmap <leader> [g  <Plug>(coc-diagnostic-prev)
-nmap <leader> ]g  <Plug>(coc-diagnostic-next)
-
-nmap <leader>rf <Plug>(coc-refactor)
-let g:coc_disable_startup_warning = 1
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
 
 " signify
 set signcolumn=yes
@@ -180,6 +167,12 @@ nnoremap <leader>f :NERDTreeFind<CR>
 
 " telescope
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fg <cmd>Telescope grep_string<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+nnoremap <leader>ft <cmd>Telescope help_tags<cr>
+nnoremap <leader>fh <cmd>Telescope search_history<cr>
+
+nnoremap <leader>gr <cmd>Telescope lsp_references<cr>
+nnoremap <leader>gi <cmd>Telescope lsp_incoming_calls<cr>
+nnoremap <leader>gd <cmd>Telescope lsp_definitions<cr>
+nnoremap <leader>gs <cmd>Telescope lsp_document_symbols<cr>
