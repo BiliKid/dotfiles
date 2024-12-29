@@ -24,17 +24,29 @@ Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
 call plug#end()
 
 " lsp
 lua require("lspconfig").clangd.setup({})
 
 lua << EOF
+vim.api.nvim_create_autocmd('InsertEnter', {
+  callback = function()
+    vim.lsp.inlay_hint.enable(false)
+  end
+})
+
+vim.api.nvim_create_autocmd('InsertLeave', {
+  callback = function()
+    vim.lsp.inlay_hint.enable(true)
+  end
+})
 local lspconfig = require'lspconfig'
 lspconfig.rust_analyzer.setup({
-    on_attach = function(client, bufnr)
-        vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-    end
+ --   on_attach = function(client, bufnr)
+ --       vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+ --   end
 })
 EOF
 
@@ -54,10 +66,10 @@ lua <<EOF
       ['<C-e>'] = cmp.mapping.abort(),
       ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     }),
-    sources = cmp.config.sources({
+    sources = cmp.config.sources( {
       { name = 'nvim_lsp' },
-    }, {
       { name = 'buffer' },
+      { name = 'nvim_lsp_signature_help' },
     })
   })
 
@@ -82,10 +94,6 @@ lua <<EOF
 
   -- Set up lspconfig.
   local capabilities = require('cmp_nvim_lsp').default_capabilities()
-  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  require('lspconfig')['<YOUR_LSP_SERVER>'].setup {
-    capabilities = capabilities
-  }
 EOF
 
 
