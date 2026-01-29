@@ -33,7 +33,7 @@ lua << EOF
 vim.lsp.enable("rust_analyzer")
 vim.lsp.enable("clangd")
 
-require'nvim-treesitter.configs'.setup {
+require'nvim-treesitter'.setup {
   ensure_installed = { "c", "lua", "vim", "cpp", "python", "rust"},
   sync_install = false,
   auto_install = true,
@@ -231,7 +231,7 @@ nnoremap <leader>t :NERDTreeToggle<CR>
 nnoremap <leader>f :NERDTreeFind<CR>
 
 " telescope
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>ff <cmd>Telescope find_files follow=true<cr>
 nnoremap <leader>fg <cmd>Telescope grep_string grep_open_files=false<cr>
 nnoremap <leader>fw <cmd>Telescope live_grep grep_open_files=false<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
@@ -242,3 +242,6 @@ nnoremap <leader>fr <cmd>Telescope lsp_references<cr>
 nnoremap <leader>fi <cmd>Telescope lsp_incoming_calls<cr>
 nnoremap <leader>fd <cmd>Telescope lsp_definitions<cr>
 nnoremap <leader>fs <cmd>Telescope lsp_document_symbols<cr>
+
+" yank relative path
+nnoremap <leader>yp :let @+=expand('%')<cr>
