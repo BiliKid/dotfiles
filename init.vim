@@ -17,37 +17,36 @@ Plug 'Raimondi/delimitMate'
 Plug 'preservim/nerdtree'
 Plug 'rust-lang/rust.vim'
 Plug 'preservim/tagbar'
-Plug 'Exafunction/codeium.vim', { 'branch': 'main' }
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'OXY2DEV/markview.nvim'
+Plug 'dhruvasagar/vim-table-mode'
 call plug#end()
 
-" lsp
-lua require("lspconfig").clangd.setup({})
-
+" lsp 
 lua << EOF
-vim.api.nvim_create_autocmd('InsertEnter', {
-  callback = function()
-    vim.lsp.inlay_hint.enable(false)
-  end
-})
+vim.lsp.enable("rust_analyzer")
+vim.lsp.enable("clangd")
 
-vim.api.nvim_create_autocmd('InsertLeave', {
-  callback = function()
-    vim.lsp.inlay_hint.enable(true)
-  end
-})
-local lspconfig = require'lspconfig'
-lspconfig.rust_analyzer.setup({
- --   on_attach = function(client, bufnr)
- --       vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
- --   end
-})
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = { "c", "lua", "vim", "cpp", "python", "rust"},
+  sync_install = false,
+  auto_install = true,
+  ignore_install = {},
+
+  highlight = {
+    enable = true,
+    disable = {},
+    additional_vim_regex_highlighting = false,
+  },
+}
+
+
 EOF
 
 lua <<EOF
@@ -106,7 +105,6 @@ set colorcolumn=80
 set nobomb
 set hlsearch
 set incsearch
-set pastetoggle=<F3>
 set encoding=utf-8
 set ff=unix
 set backspace=indent,eol,start
@@ -138,7 +136,7 @@ nnoremap <leader><tab> :b#<cr>
 " theme
 syntax on
 set bg=dark
-"colo onedark
+" colo onedark
 colo gruvbox
 
 " easymotion
@@ -223,6 +221,10 @@ let g:ale_cpp_cppcheck_option = ''
 let g:gitgutter_gt_executable = '/usr/bin/git'
 set updatetime=100
 
+" delimitMate
+let delimitMate_expand_cr = 1
+let delimitMate_expand_space = 1
+
 " nerdtree
 nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <leader>t :NERDTreeToggle<CR>
@@ -230,7 +232,8 @@ nnoremap <leader>f :NERDTreeFind<CR>
 
 " telescope
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>fg <cmd>Telescope grep_string<cr>
+nnoremap <leader>fg <cmd>Telescope grep_string grep_open_files=false<cr>
+nnoremap <leader>fw <cmd>Telescope live_grep grep_open_files=false<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>ft <cmd>Telescope help_tags<cr>
 nnoremap <leader>fh <cmd>Telescope search_history<cr>
