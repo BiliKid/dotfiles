@@ -243,5 +243,21 @@ nnoremap <leader>fi <cmd>Telescope lsp_incoming_calls<cr>
 nnoremap <leader>fd <cmd>Telescope lsp_definitions<cr>
 nnoremap <leader>fs <cmd>Telescope lsp_document_symbols<cr>
 
+lua <<EOF
+-- search in current directory
+vim.keymap.set('n', '<leader>sg', function()
+  local current_file_dir = vim.fn.expand('%:p:h')
+  if current_file_dir == '' then
+    -- if current is not a file, rollback to root directory
+    current_file_dir = vim.fn.getcwd()
+  end
+  require('telescope.builtin').live_grep({
+    cwd = current_file_dir,
+    prompt_title = 'Live Grep (Current File Dir)',
+    additional_args = { '--hidden', '--glob=!{.git,node_modules,.cache}' }
+  })
+end, { desc = 'Search in current file\'s directory with rg' })
+EOF
+
 " yank relative path
 nnoremap <leader>yp :let @+=expand('%')<cr>
