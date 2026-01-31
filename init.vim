@@ -232,8 +232,9 @@ nnoremap <leader>f :NERDTreeFind<CR>
 
 " telescope
 nnoremap <leader>ff <cmd>Telescope find_files follow=true<cr>
-nnoremap <leader>fg <cmd>Telescope grep_string grep_open_files=false<cr>
-nnoremap <leader>fw <cmd>Telescope live_grep grep_open_files=false<cr>
+nnoremap <leader>fg <cmd>Telescope grep_string grep_open_files=false follow=true<cr>
+nnoremap <leader>fc <cmd>Telescope live_grep grep_open_files=true<cr>
+nnoremap <leader>fw <cmd>Telescope live_grep grep_open_files=false follow=true<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>ft <cmd>Telescope help_tags<cr>
 nnoremap <leader>fh <cmd>Telescope search_history<cr>
