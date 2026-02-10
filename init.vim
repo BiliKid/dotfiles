@@ -203,6 +203,9 @@ nmap <F8> :TagbarToggle<CR>
 let g:rustfmt_autosave = 1
 let g:rust_cargo_use_clippy = 1
 
+" indentLine - fix JSON quotes hiding issue
+autocmd Filetype json let g:indentLine_setConceal = 0
+
 " ale
 let g:ale_linters_explicit = 1
 let g:ale_completion_delay = 500

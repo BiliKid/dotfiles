@@ -13,6 +13,10 @@ config.initial_rows = 28
 
 -- or, changing the font size and color scheme.
 config.font_size = 13
+config.font = wezterm.font {
+    family = 'JetBrains Mono',
+    harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' },
+  }
 config.color_scheme = 'Zenburn'
 
 config.keys = {
@@ -31,6 +35,12 @@ config.keys = {
     action = act.PaneSelect {
       mode = 'SwapWithActive',
     },
+  },
+  -- cmd+f for case-insensitive string search
+  {
+    key = 'f',
+    mods = 'CMD',
+    action = act.Search { CaseInSensitiveString = '' }
   },
 }
 
