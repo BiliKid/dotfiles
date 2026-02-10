@@ -241,6 +241,7 @@ nnoremap <leader>fw <cmd>Telescope live_grep grep_open_files=false follow=true<c
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>ft <cmd>Telescope help_tags<cr>
 nnoremap <leader>fh <cmd>Telescope search_history<cr>
+nnoremap <leader>sg <cmd>Telescope live_grep vim.fn.expand('%:p:h') grep_open_files=false<cr>
 
 nnoremap <leader>fr <cmd>Telescope lsp_references<cr>
 nnoremap <leader>fi <cmd>Telescope lsp_incoming_calls<cr>
