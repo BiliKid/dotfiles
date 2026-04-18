@@ -1,7 +1,6 @@
 " airline
 let g:airline_theme = 'gruvbox'
 let g:airline_powerline_fonts = 1
-let g:airline#extensions#ale#enabled = 1
 let g:airline_skip_empty_sections = 1
 let g:airline#parts#ffenc#skip_expected_string = 'utf-8[unix]'
 let g:airline#extensions#default#section_truncate_width = {
@@ -25,7 +24,6 @@ vim.pack.add({
   gh('vim-airline/vim-airline-themes'),
   gh('terryma/vim-multiple-cursors'),
   gh('tpope/vim-fugitive'),
-  gh('dense-analysis/ale'),
   gh('mhinz/vim-signify'),
   gh('lukas-reineke/indent-blankline.nvim'),
   { src = gh('joshdick/onedark.vim'), version = 'main' },
@@ -175,17 +173,6 @@ nmap <leader>w <Plug>(easymotion-overwin-w)
 " rust
 let g:rustfmt_autosave = 1
 let g:rust_cargo_use_clippy = 1
-
-" ale
-let g:ale_linters_explicit = 1
-let g:ale_completion_delay = 500
-let g:ale_echo_delay = 20
-let g:ale_lint_delay = 500
-let g:ale_echo_msg_format = '[%linter%] %code: %%s'
-let g:ale_lint_on_text_changed = 'normal'
-let g:ale_lint_on_insert_leave = 1
-let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
-let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
 
 " delimitMate
 let delimitMate_expand_cr = 1
