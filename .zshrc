@@ -70,7 +70,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-completions zsh-autosuggestions)
+plugins=(git zsh-autosuggestions zsh-autocomplete dirhistory history)
 
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 
@@ -123,3 +123,5 @@ alias vi=nvim
 
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
+alias hf="history|fzf"
+alias fp="fzf --style full --preview 'fzf-preview.sh {}' --bind 'focus:transform-header:file --brief {}'"
