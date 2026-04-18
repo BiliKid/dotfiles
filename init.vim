@@ -1,32 +1,70 @@
-call plug#begin('~/.config/nvim/plugged')
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'easymotion/vim-easymotion'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'tpope/vim-fugitive'
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'dense-analysis/ale'
-Plug 'mhinz/vim-signify'
-Plug 'Yggdroot/indentLine'
-Plug 'joshdick/onedark.vim', {'branch': 'main'}
-Plug 'junegunn/seoul256.vim'
-Plug 'morhetz/gruvbox'
-Plug 'Raimondi/delimitMate'
-Plug 'preservim/nerdtree'
-Plug 'rust-lang/rust.vim'
-Plug 'preservim/tagbar'
-Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-path'
-Plug 'hrsh7th/cmp-cmdline'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'nvim-treesitter/nvim-treesitter'
-Plug 'OXY2DEV/markview.nvim'
-Plug 'dhruvasagar/vim-table-mode'
-call plug#end()
+let g:airline#extensions#tabline#enabled = 0
+let g:airline_theme = 'gruvbox'
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#ale#enabled = 1
+let g:airline_skip_empty_sections = 1
+let g:airline#parts#ffenc#skip_expected_string = 'utf-8[unix]'
+let g:airline#extensions#default#section_truncate_width = {
+      \ 'b': 79,
+      \ 'x': 60,
+      \ 'y': 88,
+      \ }
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+
+lua << EOF
+local gh = function(x) return 'https://github.com/' .. x end
+
+vim.pack.add({
+  gh('nvim-lua/plenary.nvim'),
+  gh('nvim-telescope/telescope.nvim'),
+  gh('easymotion/vim-easymotion'),
+  gh('vim-airline/vim-airline'),
+  gh('vim-airline/vim-airline-themes'),
+  gh('terryma/vim-multiple-cursors'),
+  gh('tpope/vim-fugitive'),
+  gh('dense-analysis/ale'),
+  gh('mhinz/vim-signify'),
+  gh('Yggdroot/indentLine'),
+  { src = gh('joshdick/onedark.vim'), version = 'main' },
+  gh('junegunn/seoul256.vim'),
+  gh('morhetz/gruvbox'),
+  gh('Raimondi/delimitMate'),
+  gh('nvim-neo-tree/neo-tree.nvim'),
+  gh('nvim-tree/nvim-web-devicons'),
+  gh('MunifTanjim/nui.nvim'),
+  gh('rust-lang/rust.vim'),
+  gh('neovim/nvim-lspconfig'),
+  gh('hrsh7th/cmp-nvim-lsp'),
+  gh('hrsh7th/cmp-buffer'),
+  gh('hrsh7th/cmp-path'),
+  gh('hrsh7th/cmp-cmdline'),
+  gh('hrsh7th/nvim-cmp'),
+  gh('nvim-treesitter/nvim-treesitter'),
+  gh('OXY2DEV/markview.nvim'),
+  gh('akinsho/bufferline.nvim'),
+  gh('dhruvasagar/vim-table-mode'),
+}, { load = true })
+EOF
+
+lua << EOF
+vim.opt.termguicolors = true
+require("bufferline").setup({
+  options = {
+    separator_style = "thin",
+    diagnostics = "nvim_lsp",
+    offsets = {
+      {
+        filetype = "neo-tree",
+        text = "File Explorer",
+        text_align = "left",
+        separator = true,
+      },
+    },
+  },
+})
+EOF
 
 " lsp 
 lua << EOF
@@ -149,57 +187,7 @@ nmap <leader>w <Plug>(easymotion-overwin-w)
 " signify
 set signcolumn=yes
 
-" tags
-let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
-let g:gutentags_ctags_tagfile = '.tags'
-" ctags and gtags
-let g:gutentags_modules = []
-if executable('ctags')
-	let g:gutentags_modules += ['ctags']
-endif
-let g:gutentags_cache_dir = expand('~/.cache/tags')
-let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
-let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
-let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
-let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
-let g:gutentags_define_advanced_commands = 1
-
-" rust and tagbar
-let g:rust_use_custom_ctags_defs = 1
-let g:tagbar_type_rust = {
-  \ 'ctagsbin' : '/opt/homebrew/bin/ctags',
-  \ 'ctagstype' : 'rust',
-  \ 'kinds' : [
-      \ 'n:modules',
-      \ 's:structures:1',
-      \ 'i:interfaces',
-      \ 'c:implementations',
-      \ 'f:functions:1',
-      \ 'g:enumerations:1',
-      \ 't:type aliases:1:0',
-      \ 'v:constants:1:0',
-      \ 'M:macros:1',
-      \ 'm:fields:1:0',
-      \ 'e:enum variants:1:0',
-      \ 'P:methods:1',
-  \ ],
-  \ 'sro': '::',
-  \ 'kind2scope' : {
-      \ 'n': 'module',
-      \ 's': 'struct',
-      \ 'i': 'interface',
-      \ 'c': 'implementation',
-      \ 'f': 'function',
-      \ 'g': 'enum',
-      \ 't': 'typedef',
-      \ 'v': 'variable',
-      \ 'M': 'macro',
-      \ 'm': 'field',
-      \ 'e': 'enumerator',
-      \ 'P': 'method',
-  \ },
-\ }
-nmap <F8> :TagbarToggle<CR>
+" rust
 let g:rustfmt_autosave = 1
 let g:rust_cargo_use_clippy = 1
 
@@ -214,7 +202,6 @@ let g:ale_lint_delay = 500
 let g:ale_echo_msg_format = '[%linter%] %code: %%s'
 let g:ale_lint_on_text_changed = 'normal'
 let g:ale_lint_on_insert_leave = 1
-let g:airline#extensions#ale#enabled = 1
 let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
 let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
 let g:ale_c_cppcheck_option = ''
@@ -228,10 +215,9 @@ set updatetime=100
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
 
-" nerdtree
-nnoremap <leader>n :NERDTreeFocus<CR>
-nnoremap <leader>t :NERDTreeToggle<CR>
-nnoremap <leader>f :NERDTreeFind<CR>
+" neo-tree
+nnoremap <leader>t :Neotree toggle<CR>
+nnoremap <leader>f :Neotree reveal<CR>
 
 " telescope
 nnoremap <leader>ff <cmd>Telescope find_files follow=true<cr>
